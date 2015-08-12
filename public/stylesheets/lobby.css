@@ -1,0 +1,44 @@
+
+.oneGame {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    position: relative;
+}
+
+#allGames .gameName {
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.gameState::before {
+    content: 'State: ';
+}
+
+.pointLimit {
+    position: relative;
+}
+
+.pointLimit::before {
+    content: 'Points: ';
+}
+
+.playerName {
+    margin: 5px;
+}
+
+.playerName:nth-of-type(2) {
+    display: inline-block;
+}
+
+.playerName:nth-of-type(3) {
+    display: inline-block;
+}
+
+.players {
+    position: absolute;
+    top: 0;
+    right: 20%;
+    text-align: center;
+}

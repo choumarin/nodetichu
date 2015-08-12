@@ -1,0 +1,26 @@
+body {
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#giveDragon {
+    background: white none repeat scroll 0 0;
+    border: 2px solid grey;
+    border-radius: 5px;
+    left: 50%;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+#giveDragon > span {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+}

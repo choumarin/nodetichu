@@ -1,0 +1,184 @@
+@font-face {
+    font-family: tichu-font;
+    src: url('../font/shanghai.ttf');
+}
+
+.card {
+    display: inline-block;
+    width: 100px;
+    height: 154px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 2px 2px 1px black;
+    background: white no-repeat center / 50%;
+    font-size: 40px;
+    font-weight: normal;
+    box-sizing: border-box;
+    padding-left: 4px;
+    font-family: tichu-font;
+    letter-spacing: -10px;
+    margin-top: 40px;
+    vertical-align: bottom;
+    text-align: left;
+    color: grey;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+.card.selected {
+    margin-top: 0;
+    margin-bottom: 40px
+}
+
+.folded .card:not(:first-of-type) {
+    margin-left: -60px;
+}
+
+.stacked .card:not(:first-of-type) {
+    margin-left: -99px;
+    box-shadow: 0.5px 0px 0.5px 0.5px black;
+}
+
+.card.small {
+    width: 50px;
+    height: 77px;
+    border-radius: 5px;
+    font-size: 20px;
+    padding-left: 2px;
+    letter-spacing: -5px;
+    margin-top: 20px;
+}
+
+.folded .card.small:not(:first-of-type) {
+    margin-left: -30px;
+}
+
+.stacked .card.small:not(:first-of-type) {
+    margin-left: -49.5px;
+    box-shadow: 0.5px 0px 0.5px 0.5px black;
+}
+
+.card.Special::before {
+    content: ".";
+    color: transparent;
+}
+
+.card.nowish {
+    background-image: url('../images/no.png');
+    background-size: 65%;
+    background-position: center;
+    color: grey;
+    text-align: center;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.card.nowish:before {
+    content: "No wish";
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    letter-spacing: 0;
+}
+
+.card.two:before {
+    content: "2";
+}
+
+.card.three:before {
+    content: "3";
+}
+
+.card.four:before {
+    content: "4";
+}
+
+.card.five:before {
+    content: "5";
+}
+
+.card.six:before {
+    content: "6";
+}
+
+.card.seven:before {
+    content: "7";
+}
+
+.card.eight:before {
+    content: "8";
+}
+
+.card.nine:before {
+    content: "9";
+}
+
+.card.ten:before {
+    content: "10";
+}
+
+.card.jack:before {
+    content: "J";
+}
+
+.card.queen:before {
+    content: "Q";
+}
+
+.card.king:before {
+    content: "K";
+}
+
+.card.as:before {
+    content: "A";
+}
+
+.card.Pagoda {
+    background-image: url('../images/pagoda.png');
+    color: #16b2cd;
+}
+
+.card.Star {
+    background-image: url('../images/star.png');
+    background-size: 65%;
+    color: #ed273a;
+}
+
+.card.Sword {
+    background-image: url('../images/sword.png');
+    background-size: 60%;
+    color: #151816;
+}
+
+.card.Jade {
+    background-image: url('../images/jade.png');
+    background-size: 60%;
+    color: #14984b
+}
+
+.card.mahjong {
+    background-image: url('../images/mahjong.png');
+}
+
+.card.phoenix {
+    background-image: url('../images/phoenix.png');
+}
+
+.card.dog {
+    background-image: url('../images/dog.png');
+}
+
+.card.dragon {
+    background-image: url('../images/dragon.png');
+}
+
+.card.Special {
+    background-size: 102%;
+}
+
+.card.hidden {
+    border-color: white;
+    background-image: url('../images/tichu-back.png');
+    background-size: 105%;
+}
+

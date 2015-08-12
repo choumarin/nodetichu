@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h1= title
+    div#theGame
+        include table
+    div#lobby
+        form#formCreate
+            input#userName(placeholder='User name')
+            input#gameName(placeholder='Game name')
+            input#points(placeholder='Max points')
+            button#btnCreate(type='submit') CREATE
+        div#allGames
