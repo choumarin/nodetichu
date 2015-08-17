@@ -3,8 +3,28 @@
     src: url('../font/shanghai.ttf');
 }
 
+@font-face {
+  font-family: 'PT Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Sans'), local('PTSans-Regular'), url(http://fonts.gstatic.com/s/ptsans/v8/ATKpv8nLYAKUYexo8iqqrg.woff2) format('woff2'), url(http://fonts.gstatic.com/s/ptsans/v8/LKf8nhXsWg5ybwEGXk8UBQ.woff) format('woff');
+}
+
+
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'PT Sans', sans-serif;
+	background : #dedad3;
+}
+
+h1 {
+    font-family: tichu-font;
+	background : #800000;
+	color: white;
+	text-align: center;
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
 }
 
 div {
@@ -48,7 +68,7 @@ div {
 
 .table {
     height: 600px;
-    background-color: lightgrey;
+    background-color: lightblue;
     border-radius: 10px;
     padding: 20px;
     position: relative;
@@ -58,9 +78,9 @@ div {
     position: absolute;
     height: 150px;
     width: 500px;
-    border: 1px solid black;
+    border: 1px /* solid */ brown;
     padding: 1px;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
 }
 
@@ -166,12 +186,45 @@ div {
     font-size: 200%;
     text-align: center;
     right: 10%;
-    margin-bottom: 5px;
+	margin-bottom: 5px;
+	background: #800000;
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	color: #ffffff;
+	font-size: 20px;
+}
+
+#btnPlay {
+	background: #8FBC8F;
+}
+
+#btnClear {
+    font-size: 15px;
+	color : gray;
+	background: white;
+}
+
+#btnPass {
+	background: #D3D3D3;
+}
+
+#btnLeave {
+	width: 100px;
+	background: #4C4C4C;
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;
+	color: white;
 }
 
 #btnAccept {
     font-size: 150%;
-}
+	background: #800000;
+	-webkit-border-radius: 10;
+	-moz-border-radius: 10;
+	border-radius: 10px;btncle
+	
 
 .played {
     position: absolute;
@@ -226,9 +279,9 @@ div {
 }
 
 .currentTurn {
-    border: 2px solid darkblue;
+    border: 2px solid #B36666;
     padding: 0px;
-    background-color: skyblue;
+    background-color: #B36666;
 }
 
 .folded .card[giveto=front] {
@@ -260,7 +313,7 @@ div {
     font-size: 20px;
     text-align: center;
     position: absolute;
-    border: 2px solid grey;
+    border: 2px solid #800000;
     border-radius: 5px;
     background: white;
     padding: 10px;
@@ -283,7 +336,7 @@ div {
 
 .alternatives {
     display: none;
-    border: 2px solid grey;
+    border: 2px solid #800000;
     background: white;
     position: relative;
     top: -130px;
@@ -337,10 +390,6 @@ div {
 
 .self .playerStack .count {
     transform: rotate(-90deg);
-}
-
-#btnClear {
-    font-size: 15px;
 }
 
 .passed {
@@ -415,5 +464,5 @@ div {
 .playerView.emptySeat:before {
     font-weight: bold;
     content: 'Empty seat';
-    color: red;
+    color: brown;
 }
