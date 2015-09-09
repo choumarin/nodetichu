@@ -562,5 +562,7 @@ $(document).ready(function () {
 
     refreshInterval = setInterval(getData, 1000);
 
+    var socket = io();
+
 });
 
