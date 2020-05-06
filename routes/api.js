@@ -53,14 +53,19 @@ router.post('/joinGame', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-    if (req.body.name === '') {
-        if (typeof req.session.name === 'undefined') {
-            req.session.name = 'player-' + (Math.floor(Math.random() * 10000) + 0);
+    try {
+        if (req.body.name === '') {
+            if (typeof req.session.name === 'undefined') {
+                // req.session.name = 'player-' + (Math.floor(Math.random() * 10000) + 0);
+                throw new Error('No valid player name');
+            }
+        } else {
+            req.session.name = req.body.name;
         }
-    } else {
-        req.session.name = req.body.name;
+        res.json({});
+    } catch (e) {
+        res.json({error: e.message});
     }
-    res.json({});
 });
 
 router.post('/createGame', function (req, res, next) {
