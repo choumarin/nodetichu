@@ -22,8 +22,6 @@ h1 {
 	background : #800000;
 	color: white;
 	text-align: center;
-	-webkit-border-radius: 10;
-	-moz-border-radius: 10;
 	border-radius: 10px;
 }
 
@@ -188,8 +186,6 @@ div {
     right: 10%;
 	margin-bottom: 5px;
 	background: #800000;
-	-webkit-border-radius: 10;
-	-moz-border-radius: 10;
 	border-radius: 10px;
 	color: #ffffff;
 	font-size: 20px;
@@ -212,8 +208,6 @@ div {
 #btnLeave {
 	width: 100px;
 	background: #4C4C4C;
-	-webkit-border-radius: 10;
-	-moz-border-radius: 10;
 	border-radius: 10px;
 	color: white;
 }
@@ -221,9 +215,7 @@ div {
 #btnAccept {
     font-size: 150%;
 	background: #800000;
-	-webkit-border-radius: 10;
-	-moz-border-radius: 10;
-	border-radius: 10px;btncle
+	border-radius: 10px;
 }
 
 .played {
