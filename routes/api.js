@@ -18,11 +18,23 @@ function getBodyParam(req, paramName) {
     }
 }
 
+var TIMEOUT = 1000 * 60; //* 60 * 24; // 24h
+
+function killStaleGames(allGames) {
+    Object.keys(allGames).forEach(function (key) {
+        if (Date.now() > allGames[key].lastPlay + TIMEOUT) {
+            delete allGames[key]
+        }
+    });
+}
+
 router.get('/myGame', function (req, res, next) {
-    if (typeof req.session.gameId !== 'undefined') {
+    if (typeof req.session.gameId !== 'undefined' && typeof allGames[req.session.gameId] !== 'undefined') {
         allGames[req.session.gameId].tick();
         res.json(allGames[req.session.gameId].publicData(req.session.position));
     } else {
+        delete req.session.gameId;
+        killStaleGames(allGames);
         res.json(anonymiseAllGames(allGames));
     }
 });
