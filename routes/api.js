@@ -18,7 +18,7 @@ function getBodyParam(req, paramName) {
     }
 }
 
-var TIMEOUT = 1000 * 60; //* 60 * 24; // 24h
+var TIMEOUT = 1000 * 60 * 60 * 24; // 24h
 
 function killStaleGames(allGames) {
     Object.keys(allGames).forEach(function (key) {
@@ -157,6 +157,7 @@ router.post('/play', function (req, res, next) {
         try {
             allGames[req.session.gameId].players[req.session.position].play(cards, allGames[req.session.gameId].lastHand(), alternativeId, wish);
             allGames[req.session.gameId].tick();
+            allGames[req.session.gameId].lastPlay = Date.now();
             res.json(allGames[req.session.gameId].publicData(req.session.position));
         } catch (e) {
             if (e.xtype === 'ALTERNATIVE') {
