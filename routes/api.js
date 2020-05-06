@@ -18,11 +18,23 @@ function getBodyParam(req, paramName) {
     }
 }
 
+var TIMEOUT = 1000 * 60 * 60 * 24; // 24h
+
+function killStaleGames(allGames) {
+    Object.keys(allGames).forEach(function (key) {
+        if (Date.now() > allGames[key].lastPlay + TIMEOUT) {
+            delete allGames[key]
+        }
+    });
+}
+
 router.get('/myGame', function (req, res, next) {
-    if (typeof req.session.gameId !== 'undefined') {
+    if (typeof req.session.gameId !== 'undefined' && typeof allGames[req.session.gameId] !== 'undefined') {
         allGames[req.session.gameId].tick();
         res.json(allGames[req.session.gameId].publicData(req.session.position));
     } else {
+        delete req.session.gameId;
+        killStaleGames(allGames);
         res.json(anonymiseAllGames(allGames));
     }
 });
@@ -53,14 +65,19 @@ router.post('/joinGame', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-    if (req.body.name === '') {
-        if (typeof req.session.name === 'undefined') {
-            req.session.name = 'player-' + (Math.floor(Math.random() * 10000) + 0);
+    try {
+        if (req.body.name === '') {
+            if (typeof req.session.name === 'undefined') {
+                // req.session.name = 'player-' + (Math.floor(Math.random() * 10000) + 0);
+                throw new Error('No valid player name');
+            }
+        } else {
+            req.session.name = req.body.name;
         }
-    } else {
-        req.session.name = req.body.name;
+        res.json({});
+    } catch (e) {
+        res.json({error: e.message});
     }
-    res.json({});
 });
 
 router.post('/createGame', function (req, res, next) {
@@ -140,6 +157,7 @@ router.post('/play', function (req, res, next) {
         try {
             allGames[req.session.gameId].players[req.session.position].play(cards, allGames[req.session.gameId].lastHand(), alternativeId, wish);
             allGames[req.session.gameId].tick();
+            allGames[req.session.gameId].lastPlay = Date.now();
             res.json(allGames[req.session.gameId].publicData(req.session.position));
         } catch (e) {
             if (e.xtype === 'ALTERNATIVE') {
