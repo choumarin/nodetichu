@@ -7,7 +7,11 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
-var session = require('express-session')
+var session = require('express-session')({
+    secret: 'jjhuvytqw847pbr8castrcvwae',
+    resave: false,
+    saveUninitialized: true
+})
 
 var app = express();
 
@@ -23,11 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-    secret: 'jjhuvytqw847pbr8castrcvwae',
-    resave: false,
-    saveUninitialized: true
-}))
+app.use(session)
 
 app.use('/', routes);
 app.use('/api', api);
@@ -64,4 +64,4 @@ app.use(function (err, req, res, next) {
     });
 });
 
-module.exports = app;
+module.exports = {app: app, session: session};
