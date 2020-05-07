@@ -397,6 +397,7 @@ function refreshAllGames(result) {
                             alert(result.error);
                         } else {
                             socket.emit('chat', 'Joined');
+                            $(".chat .history").empty();
                         }
                     });
                 }
@@ -526,6 +527,8 @@ $(document).ready(function () {
         $.post('/api/leaveGame', function (result) {
             if (result.error) {
                 alert(result.error);
+            } else {
+                socket.emit('chat', '** has left. **');
             }
         });
     });
@@ -571,9 +574,6 @@ $(document).ready(function () {
     });
 
     socket.on('chat', (data) => {
-        // if ($('.chat .history').find('p').length > 100) {
-        //     $('.chat .history').find('p').first().remove();
-        // }
         $(".chat .history").append($("<p></p>").text(data));
         console.log(data);
     });
