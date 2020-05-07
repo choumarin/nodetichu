@@ -9,7 +9,7 @@ var routes = require('./routes/index');
 var api = require('./routes/api');
 var session = require('express-session')({
     secret: 'jjhuvytqw847pbr8castrcvwae',
-    resave: false,
+    resave: true,
     saveUninitialized: true
 })
 
