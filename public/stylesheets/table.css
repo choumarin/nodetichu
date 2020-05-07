@@ -70,6 +70,8 @@ div {
     border-radius: 10px;
     padding: 20px;
     position: relative;
+    width: 70%;
+    display: inline-block;
 }
 
 .playerView {
@@ -457,4 +459,21 @@ div {
     font-weight: bold;
     content: 'Empty seat';
     color: brown;
+}
+
+.chat {
+    border: 2px solid red;
+    display: inline-block;
+    width: 25%;
+    margin: 10px;
+    overflow-y: auto;
+    height: 600px;
+}
+
+.chat p {
+    margin:0;
+}
+
+#chatMessage {
+    width: 80%;
 }

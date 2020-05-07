@@ -5,6 +5,7 @@
 var theGame = new Object();
 var refreshInterval;
 var oldState = '';
+var socket;
 
 function faceToString(face) {
     switch (face) {
@@ -395,6 +396,7 @@ function refreshAllGames(result) {
                         if (result.error) {
                             alert(result.error);
                         } else {
+                            socket.emit('chat', 'Joined');
                         }
                     });
                 }
@@ -416,6 +418,7 @@ $(document).ready(function () {
                     if (result.error) {
                         alert(result.error);
                     } else {
+                        socket.emit('chat', 'Joined');
                     }
                 });
             }
@@ -562,19 +565,23 @@ $(document).ready(function () {
 
     refreshInterval = setInterval(getData, 1000);
 
-    var socket = io();
-    var talking_bot;
+    socket = io();
     socket.on('connect', () => {
         console.log("socket connected");
-        socket.emit('chat', "I'm connected");
-        clearInterval(talking_bot);
-        talking_bot = setInterval(() => {
-            socket.emit('chat', "Hello World");
-        }, 5000);
     });
 
     socket.on('chat', (data) => {
+        // if ($('.chat .history').find('p').length > 100) {
+        //     $('.chat .history').find('p').first().remove();
+        // }
+        $(".chat .history").append($("<p></p>").text(data));
         console.log(data);
+    });
+
+    $('#formChat').on('submit', function () {
+        socket.emit('chat', $('#chatMessage').val());
+        $('#chatMessage').val("");
+        return false;
     });
 
     setInterval(() => {
