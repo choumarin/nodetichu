@@ -29,6 +29,9 @@ function killStaleGames(allGames) {
 }
 
 router.get('/myGame', function (req, res, next) {
+    console.debug("router sessionID " + req.sessionID);
+    console.debug("session from router view " + JSON.stringify(req.session));
+    req.session.good = true;
     if (typeof req.session.gameId !== 'undefined' && typeof allGames[req.session.gameId] !== 'undefined') {
         allGames[req.session.gameId].tick();
         res.json(allGames[req.session.gameId].publicData(req.session.position));
@@ -57,6 +60,7 @@ router.post('/joinGame', function (req, res, next) {
         allGames[gameId].addPlayer(req.session.name, position);
         req.session.position = parseInt(position);
         req.session.gameId = gameId;
+        req.session.save();
         allGames[gameId].tick();
         res.json(allGames[gameId].publicData(req.session.position));
     } catch (e) {
@@ -73,6 +77,7 @@ router.post('/login', function (req, res, next) {
             }
         } else {
             req.session.name = req.body.name;
+            req.session.save();
         }
         res.json({});
     } catch (e) {
