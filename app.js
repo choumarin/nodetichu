@@ -11,6 +11,9 @@ var session = require('express-session')
 
 var app = express();
 
+var seedrandom = require('seedrandom');
+var rng = seedrandom({ global: true });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -19,12 +22,12 @@ app.set('view engine', 'pug');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-    secret: 'jjhuvytqw847pbr8castrcvwae',
+    secret: Math.random().toString(36),
     resave: false,
     saveUninitialized: true
 }))
