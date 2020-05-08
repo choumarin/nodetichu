@@ -396,8 +396,8 @@ function refreshAllGames(result) {
                         if (result.error) {
                             alert(result.error);
                         } else {
-                            socket.emit('chat', 'Joined');
-                            $(".chat .history").empty();
+                            socket.emit('chat', '** has joined **');
+                            $('.chat .history').empty();
                         }
                     });
                 }
@@ -419,7 +419,8 @@ $(document).ready(function () {
                     if (result.error) {
                         alert(result.error);
                     } else {
-                        socket.emit('chat', 'Joined');
+                        socket.emit('chat', '** has joined **');
+                        $('.chat .history').empty();
                     }
                 });
             }
@@ -528,7 +529,7 @@ $(document).ready(function () {
             if (result.error) {
                 alert(result.error);
             } else {
-                socket.emit('chat', '** has left. **');
+                socket.emit('chat', '** has left **');
             }
         });
     });
@@ -574,13 +575,16 @@ $(document).ready(function () {
     });
 
     socket.on('chat', (data) => {
-        $(".chat .history").append($("<p></p>").text(data));
+        $('.chat .history').append($('<p></p>').text(data));
+        $('.chat .history').animate({ scrollTop: $('.chat .history').height() }, 800);
         console.log(data);
     });
 
     $('#formChat').on('submit', function () {
-        socket.emit('chat', $('#chatMessage').val());
-        $('#chatMessage').val("");
+        if ($('#chatMessage').val() !== '') {
+            socket.emit('chat', $('#chatMessage').val());
+            $('#chatMessage').val('');
+        }
         return false;
     });
 

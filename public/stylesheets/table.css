@@ -129,7 +129,7 @@ div {
 
 .playerView.self {
     height: 100%;
-    width: 100%;
+    width: 70%;
 }
 
 .playerStack {
@@ -265,6 +265,10 @@ div {
 .given .fromright {
     transform: rotate(30deg);
     right: 10%
+}
+
+.given .small {
+    z-index: 100;
 }
 
 .given .fromfront {
@@ -462,12 +466,15 @@ div {
 }
 
 .chat {
-    border: 2px solid red;
     display: inline-block;
     width: 25%;
     margin: 10px;
+    position: absolute;
+}
+
+.chat .history {
     overflow-y: auto;
-    height: 600px;
+    height: 550px;
 }
 
 .chat p {
@@ -476,4 +483,10 @@ div {
 
 #chatMessage {
     width: 80%;
+}
+
+.chat form {
+    position: absolute;
+    bottom: 0;
+    display: contents;
 }
