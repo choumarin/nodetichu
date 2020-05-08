@@ -5,34 +5,35 @@
 var theGame = new Object();
 var refreshInterval;
 var oldState = '';
+var socket;
 
 function faceToString(face) {
     switch (face) {
-        case '2' :
+        case '2':
             return 'two';
-        case '3' :
+        case '3':
             return 'three';
-        case '4' :
+        case '4':
             return 'four';
-        case '5' :
+        case '5':
             return 'five';
-        case '6' :
+        case '6':
             return 'six';
-        case '7' :
+        case '7':
             return 'seven';
-        case '8' :
+        case '8':
             return 'eight';
-        case '9' :
+        case '9':
             return 'nine';
-        case '10' :
+        case '10':
             return 'ten';
-        case 'J' :
+        case 'J':
             return 'jack';
-        case 'Q' :
+        case 'Q':
             return 'queen';
-        case 'K' :
+        case 'K':
             return 'king';
-        case 'A' :
+        case 'A':
             return 'as';
         default:
             return face.toLowerCase();
@@ -301,7 +302,7 @@ function refreshGame(theGame) {
 
     $('.currentWish').hide();
     if (theGame.state === 'PLAY' && theGame.lastHand.wish !== null) {
-        $('.currentWish').empty().append(jCard({face: theGame.lastHand.wish, color: ''}, 'small')).show();
+        $('.currentWish').empty().append(jCard({ face: theGame.lastHand.wish, color: '' }, 'small')).show();
     }
 
     oldState = theGame.state;
@@ -346,14 +347,14 @@ function refreshAllGames(result) {
             }
             if (game.players[p].seatTaken) {
                 thePlayers.append(
-                    $('<div/>', {class: 'playerName'}).text(game.players[p].name)
+                    $('<div/>', { class: 'playerName' }).text(game.players[p].name)
                 );
             } else {
                 thePlayers.append(
-                    $('<div/>', {class: 'playerName'})
+                    $('<div/>', { class: 'playerName' })
                         .append(
-                        $('<button/>', {class: 'btnJoin', gameId: index, positionId: position}).text('Join')
-                    )
+                            $('<button/>', { class: 'btnJoin', gameId: index, positionId: position }).text('Join')
+                        )
                 )
             }
         });
@@ -363,38 +364,40 @@ function refreshAllGames(result) {
             })
                 .attr('gameId', index)
                 .append(
-                $('<div/>', {
-                    class: 'gameName'
-                })
-                    .text(game.name)
-            )
+                    $('<div/>', {
+                        class: 'gameName'
+                    })
+                        .text(game.name)
+                )
                 .append(
-                $('<div/>', {
-                    class: 'gameState'
-                })
-                    .text(game.state)
-            )
+                    $('<div/>', {
+                        class: 'gameState'
+                    })
+                        .text(game.state)
+                )
                 .append(
-                $('<div/>', {
-                    class: 'pointLimit'
-                })
-                    .text(game.pointLimit)
-            )
+                    $('<div/>', {
+                        class: 'pointLimit'
+                    })
+                        .text(game.pointLimit)
+                )
                 .append(thePlayers)
         );
 
         $('.playerName button').click(function () {
-            var data = {name: $('#userName').val()};
+            var data = { name: $('#userName').val() };
             var that = this;
             $.post('/api/login', data, function (result) {
                 if (result.error) {
                     alert(result.error);
                 } else {
-                    var data = {position: $(that).attr('positionId'), gameId: $(that).attr('gameId')};
+                    var data = { position: $(that).attr('positionId'), gameId: $(that).attr('gameId') };
                     $.post('/api/joinGame', data, function (result) {
                         if (result.error) {
                             alert(result.error);
                         } else {
+                            socket.emit('chat', '** has joined **');
+                            $('.chat .history').empty();
                         }
                     });
                 }
@@ -406,16 +409,18 @@ function refreshAllGames(result) {
 $(document).ready(function () {
 
     $('#formCreate').on('submit', function () {
-        var data = {name: $('#userName').val()};
+        var data = { name: $('#userName').val() };
         $.post('/api/login', data, function (result) {
             if (result.error) {
                 alert(result.error);
             } else {
-                var data = {gameName: $('#gameName').val(), pointLimit: $('#points').val()};
+                var data = { gameName: $('#gameName').val(), pointLimit: $('#points').val() };
                 $.post('/api/createGame', data, function (result) {
                     if (result.error) {
                         alert(result.error);
                     } else {
+                        socket.emit('chat', '** has joined **');
+                        $('.chat .history').empty();
                     }
                 });
             }
@@ -492,7 +497,7 @@ $(document).ready(function () {
         var cards = $.map($('.alternatives .playerHand[aid=' + $(this).attr('aID') + '] .card '), function (c) {
             return JSON.parse($(c).attr('json'));
         });
-        $.post('/api/play', {cards: cards, alternativeId: $(this).attr('aID')}, function (result) {
+        $.post('/api/play', { cards: cards, alternativeId: $(this).attr('aID') }, function (result) {
             $('.alternatives').hide();
             if (result.error) {
                 if (result.alternatives) {
@@ -508,7 +513,7 @@ $(document).ready(function () {
     $('.giveDragonDialog button').click(function () {
         var to = $(this).attr('to');
         to = relativeToAbsolue(theGame.myPosition, to);
-        $.post('/api/giveDragon', {to: to}, function (result) {
+        $.post('/api/giveDragon', { to: to }, function (result) {
             if (result.error) {
                 alert(result.error);
             }
@@ -523,13 +528,15 @@ $(document).ready(function () {
         $.post('/api/leaveGame', function (result) {
             if (result.error) {
                 alert(result.error);
+            } else {
+                socket.emit('chat', '** has left **');
             }
         });
     });
 
     $('.playerStack').mouseover(function () {
         $(this).children().last().append(
-            $('<div/>', {class: 'count'})
+            $('<div/>', { class: 'count' })
                 .text($(this).children().length)
         )
     })
@@ -562,5 +569,30 @@ $(document).ready(function () {
 
     refreshInterval = setInterval(getData, 1000);
 
+    socket = io();
+    socket.on('connect', () => {
+        console.log("socket connected");
+    });
+
+    socket.on('chat', (data) => {
+        $('.chat .history').append($('<p></p>').text(data));
+        $('.chat .history').animate({ scrollTop: $('.chat .history').height() }, 800);
+        console.log(data);
+    });
+
+    $('#formChat').on('submit', function () {
+        if ($('#chatMessage').val() !== '') {
+            socket.emit('chat', $('#chatMessage').val());
+            $('#chatMessage').val('');
+        }
+        return false;
+    });
+
+    setInterval(() => {
+        if (!socket.connected) {
+            console.log("reconnecting")
+            socket.connect();
+        }
+    }, 1000);
 });
 
