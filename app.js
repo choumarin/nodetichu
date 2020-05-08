@@ -4,15 +4,19 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var seedrandom = require('seedrandom');
+seedrandom({ global: true });
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
-var session = require('express-session')
+var session = require('express-session')({
+    secret: Math.random().toString(36),
+    resave: true,
+    saveUninitialized: true
+})
 
 var app = express();
 
-var seedrandom = require('seedrandom');
-var rng = seedrandom({ global: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,11 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-    secret: Math.random().toString(36),
-    resave: false,
-    saveUninitialized: true
-}))
+app.use(session)
 
 app.use('/', routes);
 app.use('/api', api);
@@ -67,5 +67,4 @@ app.use(function (err, req, res, next) {
     });
 });
 
-
-module.exports = app;
+module.exports = { app: app, session: session };

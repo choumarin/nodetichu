@@ -18,7 +18,7 @@ function getBodyParam(req, paramName) {
     }
 }
 
-var TIMEOUT = 1000 * 60; //* 60 * 24; // 24h
+var TIMEOUT = 1000 * 60 * 60 * 24; // 24h
 
 function killStaleGames(allGames) {
     Object.keys(allGames).forEach(function (key) {
@@ -29,6 +29,9 @@ function killStaleGames(allGames) {
 }
 
 router.get('/myGame', function (req, res, next) {
+    console.debug("router sessionID " + req.sessionID);
+    console.debug("session from router view " + JSON.stringify(req.session));
+    req.session.good = true;
     if (typeof req.session.gameId !== 'undefined' && typeof allGames[req.session.gameId] !== 'undefined') {
         allGames[req.session.gameId].tick();
         res.json(allGames[req.session.gameId].publicData(req.session.position));
@@ -57,6 +60,7 @@ router.post('/joinGame', function (req, res, next) {
         allGames[gameId].addPlayer(req.session.name, position);
         req.session.position = parseInt(position);
         req.session.gameId = gameId;
+        req.session.save();
         allGames[gameId].tick();
         res.json(allGames[gameId].publicData(req.session.position));
     } catch (e) {
@@ -73,6 +77,7 @@ router.post('/login', function (req, res, next) {
             }
         } else {
             req.session.name = req.body.name;
+            req.session.save();
         }
         res.json({});
     } catch (e) {
@@ -157,6 +162,7 @@ router.post('/play', function (req, res, next) {
         try {
             allGames[req.session.gameId].players[req.session.position].play(cards, allGames[req.session.gameId].lastHand(), alternativeId, wish);
             allGames[req.session.gameId].tick();
+            allGames[req.session.gameId].lastPlay = Date.now();
             res.json(allGames[req.session.gameId].publicData(req.session.position));
         } catch (e) {
             if (e.xtype === 'ALTERNATIVE') {
