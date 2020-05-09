@@ -189,11 +189,13 @@ function refreshGame(theGame) {
             break;
     }
 
-    if (theGame.state === 'PLAY' && theGame.lastHand.turn === theGame.myPosition) {
+    if (theGame.state === 'PLAY') {
+        // Show play even out of turn in case of bomb.
         $('#btnPlay').show();
-        $('#btnPass').show();
+        if (theGame.lastHand.turn === theGame.myPosition) {
+            $('#btnPass').show();
+        }
     }
-
 
     $('.tableName').text(theGame.name);
     var team1Name, team2Name = '';
