@@ -56,6 +56,11 @@ router.post('/joinGame', function (req, res, next) {
             throw new Error('Already in a game');
         }
         var gameId = getBodyParam(req, 'gameId');
+        allGames[gameId].players.forEach((p) => {
+            if (req.session.name === p.name) {
+                throw new Error('Already a player with the same name in that game');
+            }
+        });
         var position = getBodyParam(req, 'position');
         allGames[gameId].addPlayer(req.session.name, position);
         req.session.position = parseInt(position);
